@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>keyborad-nav</title>
+    <link rel="stylesheet" href="./keyborad.css" />
+  </head>
+  <body>
+    <header></header>
+    <main><div class="wrapper" id="main"></div></main>
+    <footer></footer>
+    <script>
+      var data = init()
+      var keys = data['keys']
+      var hash = data['hash']
+      
+      generateNav(keys, hash)
+
+      listenKeyborad()
+
+      function init() {
+        var keys = {
+          '0': { 0: 'q', 1: 'w', 2: 'e', 3: 'r', 4: 't', 5: 'y', 6: 'u', 7: 'i', 8: 'o', 9: 'p', length: 10 },
+          '1': { 0: 'a', 1: 's', 2: 'd', 3: 'f', 4: 'g', 5: 'h', 6: 'j', 7: 'k', 8: 'l', length: 9 },
+          '2': { 0: 'z', 1: 'x', 2: 'c', 3: 'v', 4: 'b', 5: 'n', 6: 'm', length: 7 },
+          'length': 3
+        }
+        var urls = JSON.parse(localStorage.getItem('__url__') || 'null')
+        var hash = urls
+          ? urls
+          : {
+              q: 'qq.com',
+              w: 'weibo.com',
+              e: 'ele.me',
+              r: 'renren.com',
+              t: 'tianya.com',
+              y: 'youtube.com',
+              u: 'uc.com',
+              i: 'iqiyi.com',
+              o: 'opera.com',
+              p: undefined,
+              a: 'acfun.tv',
+              s: 'sohu.com',
+              z: 'zhihu.com',
+              m: 'www.mcdonalds.com.cn'
+            }
+        return {
+          'keys': keys,
+          'hash': hash
+        }
+      }
+
+      function generateNav(keys, hash) {
+        for (var i = 0; i < keys.length; i++) {
+          var div = cTag('div')
+          main.appendChild(div)
+          for (var j = 0; j < keys[i].length; j++) {
+            var x = keys[i]
+
+            var span = createSpan(x[j])
+            var img = createImage(hash[x[j]])
+            var button = createButton(x[j])
+            
+            var kbd = cTag('kbd')
+            kbd.className = 'key'
+
+            kbd.appendChild(span)
+            kbd.appendChild(img)
+            kbd.appendChild(button)
+
+            div.appendChild(kbd)
+          }
+        }
+      }
+
+      function createImage(domain) {
+        var img = cTag('img')
+        if (domain) {
+          img.src = 'http://' + domain + '/favicon.ico'
+        } else {
+          img.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+        }
+        img.onerror = function(){
+          this.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+        }
+        return img
+      }
+
+      function createButton(id) {
+        var button = cTag('button')
+        button.textContent = 'edit'
+        button.id = id
+        button.onclick = function(e) {
+          var obj = e.target
+          var img = obj.previousSibling
+          var key = obj.id
+          var url = prompt('edit url?')
+          hash[key] = url
+          img.src = 'http://' + url + '/favicon.ico'
+          img.onerror = function() {
+            this.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+          }
+          localStorage.setItem('__url__', JSON.stringify(hash))
+        }
+        return button
+      }
+
+      function createSpan(textContent) {
+        var span = cTag('span')
+        span.textContent = textContent
+        span.className = "text"
+        return span
+      }
+
+      function listenKeyborad() {
+        document.onkeyup = function(e) {
+          var key = e['key']
+          var url = hash[key]
+          window.open(url, '_blank')
+        }
+      }
+
+      function cTag(tagName) {
+        return document.createElement(tagName)
+      }
+    </script>
+  </body>
+</html>
