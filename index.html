@@ -15,7 +15,7 @@
       var data = init()
       var keys = data['keys']
       var hash = data['hash']
-      
+
       generateNav(keys, hash)
 
       listenKeyborad()
@@ -25,7 +25,7 @@
           '0': { 0: 'q', 1: 'w', 2: 'e', 3: 'r', 4: 't', 5: 'y', 6: 'u', 7: 'i', 8: 'o', 9: 'p', length: 10 },
           '1': { 0: 'a', 1: 's', 2: 'd', 3: 'f', 4: 'g', 5: 'h', 6: 'j', 7: 'k', 8: 'l', length: 9 },
           '2': { 0: 'z', 1: 'x', 2: 'c', 3: 'v', 4: 'b', 5: 'n', 6: 'm', length: 7 },
-          'length': 3
+          length: 3
         }
         var urls = JSON.parse(localStorage.getItem('__url__') || 'null')
         var hash = urls
@@ -47,8 +47,8 @@
               m: 'www.mcdonalds.com.cn'
             }
         return {
-          'keys': keys,
-          'hash': hash
+          keys: keys,
+          hash: hash
         }
       }
 
@@ -62,7 +62,7 @@
             var span = createSpan(x[j])
             var img = createImage(hash[x[j]])
             var button = createButton(x[j])
-            
+
             var kbd = cTag('kbd')
             kbd.className = 'key'
 
@@ -82,7 +82,7 @@
         } else {
           img.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
         }
-        img.onerror = function(){
+        img.onerror = function() {
           this.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
         }
         return img
@@ -110,7 +110,7 @@
       function createSpan(textContent) {
         var span = cTag('span')
         span.textContent = textContent
-        span.className = "text"
+        span.className = 'text'
         return span
       }
 
@@ -118,7 +118,9 @@
         document.onkeyup = function(e) {
           var key = e['key']
           var url = hash[key]
-          window.open('http://' + url, '_blank')
+          if (url) {
+            window.open('http://' + url, '_blank')
+          }
         }
       }
 
