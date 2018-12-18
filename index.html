@@ -118,7 +118,7 @@
         document.onkeyup = function(e) {
           var key = e['key']
           var url = hash[key]
-          if (url) {
+          if (!!url) {
             window.open('http://' + url, '_blank')
           }
         }
